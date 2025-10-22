@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potato批量管理工具</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        // 立即检查登录状态
+        (function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const loginTime = localStorage.getItem('loginTime');
+            
+            if (!isLoggedIn || !loginTime) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const currentTime = new Date().getTime();
+            const loginTimestamp = parseInt(loginTime);
+            
+            // 检查是否在24小时内登录
+            if (currentTime - loginTimestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('loginTime');
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+</head>
+<!-- 其余代码保持不变 -->
 

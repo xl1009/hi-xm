@@ -61,37 +61,32 @@
                                 <input type="number" id="regCount" value="5" min="1" max="50">
                             </div>
                             <div class="form-group">
+                                <label>注册地址:</label>
+                                <input type="text" id="registerUrl" value="https://potato160.org/dl" placeholder="请输入注册地址">
+                            </div>
+                            <div class="form-group">
                                 <label>接码平台:</label>
                                 <select id="smsService">
-                                    <option value="sms-activate">SMS-Activate</option>
-                                    <option value="5sim">5Sim</option>
-                                    <option value="onlinesim">OnlineSim</option>
-                                    <option value="sms-man">SMS-Man</option>
+                                    <option value="10minutemail">10MinuteMail</option>
+                                    <option value="tempmail">Temp-Mail</option>
+                                    <option value="guerrillamail">GuerrillaMail</option>
                                     <option value="other">其他平台</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>API密钥:</label>
-                                <input type="text" id="apiKey" placeholder="请输入接码平台API密钥">
+                                <label>默认密码:</label>
+                                <input type="text" id="defaultPassword" value="qwer1234" placeholder="请输入默认密码">
                             </div>
                             <div class="form-group">
                                 <label>国家/地区:</label>
                                 <select id="countryCode">
-                                    <option value="+7">俄罗斯 (+7)</option>
                                     <option value="+86">中国 (+86)</option>
                                     <option value="+1">美国 (+1)</option>
                                     <option value="+44">英国 (+44)</option>
+                                    <option value="+7">俄罗斯 (+7)</option>
                                     <option value="+49">德国 (+49)</option>
                                     <option value="+33">法国 (+33)</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label>注册地址:</label>
-                                <input type="text" id="registerUrl" value="https://potato160.org/dl" readonly style="background-color: #f7fafc; cursor: not-allowed;">
-                            </div>
-                            <div class="form-group">
-                                <label>默认密码:</label>
-                                <input type="text" id="defaultPassword" value="qwer1234" readonly style="background-color: #f7fafc; cursor: not-allowed;">
                             </div>
                             <button id="startRegisterBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始注册</button>
                         </div>
@@ -123,27 +118,28 @@
                         </div>
                         
                         <div class="card">
-                            <h3><i class="fas fa-download"></i> 导出设置</h3>
+                            <h3><i class="fas fa-sliders-h"></i> 高级设置</h3>
                             <div class="form-group">
-                                <label>导出文件名:</label>
-                                <input type="text" id="exportFilename" value="potato_accounts" placeholder="请输入文件名">
+                                <label>注册间隔 (秒):</label>
+                                <input type="number" id="registerDelay" value="3" min="1" max="30">
                             </div>
                             <div class="form-group">
-                                <label>导出格式:</label>
-                                <select id="exportFormat">
-                                    <option value="json">JSON格式</option>
-                                    <option value="csv">CSV格式</option>
-                                    <option value="txt">文本格式</option>
+                                <label>失败重试次数:</label>
+                                <input type="number" id="retryCount" value="2" min="0" max="5">
+                            </div>
+                            <div class="form-group">
+                                <label>验证码超时 (秒):</label>
+                                <input type="number" id="captchaTimeout" value="60" min="10" max="180">
+                            </div>
+                            <div class="form-group">
+                                <label>用户代理:</label>
+                                <select id="userAgent">
+                                    <option value="random">随机浏览器</option>
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">Firefox</option>
+                                    <option value="safari">Safari</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>导出路径:</label>
-                                <div class="input-with-button">
-                                    <input type="text" id="exportPath" value="/accounts/" placeholder="请输入保存路径">
-                                    <button class="btn btn-small" id="browseFolderBtn"><i class="fas fa-folder"></i></button>
-                                </div>
-                            </div>
-                            <button id="exportAccountsBtn" class="btn"><i class="fas fa-file-export"></i> 导出账号</button>
                         </div>
                     </div>
                     
@@ -154,7 +150,8 @@
                                 <thead>
                                     <tr>
                                         <th>时间</th>
-                                        <th>手机号</th>
+                                        <th>邮箱账号</th>
+                                        <th>密码</th>
                                         <th>状态</th>
                                         <th>详细信息</th>
                                     </tr>
@@ -175,16 +172,12 @@
                         <div class="card">
                             <h3><i class="fas fa-users"></i> 群组设置</h3>
                             <div class="form-group">
-                                <label>群组链接或ID (每行一个):</label>
-                                <textarea id="groupList" rows="6" placeholder="请输入群组链接或ID，每行一个&#10;例如:&#10;https://t.me/group1&#10;@group2&#10;123456789"></textarea>
+                                <label>群组ID或用户名 (每行一个):</label>
+                                <textarea id="groupList" rows="6" placeholder="请输入群组ID或用户名，每行一个&#10;例如:&#10;@group1&#10;group2&#10;123456789"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>加群延迟 (秒):</label>
-                                <input type="number" id="joinDelay" value="5" min="1" max="60">
-                            </div>
-                            <div class="form-group">
-                                <label>最大加群数量:</label>
-                                <input type="number" id="maxJoinCount" value="50" min="1" max="1000">
+                                <input type="number" id="joinDelay" value="3" min="1" max="60">
                             </div>
                             <button id="startJoinBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始加群</button>
                         </div>
@@ -213,30 +206,6 @@
                                 <div class="progress-fill" id="joinProgress" style="width: 0%"></div>
                             </div>
                             <button id="stopJoinBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止加群</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-cog"></i> 高级设置</h3>
-                            <div class="form-group">
-                                <label>账号分配策略:</label>
-                                <select id="accountStrategy">
-                                    <option value="round-robin">轮询分配</option>
-                                    <option value="random">随机分配</option>
-                                    <option value="balanced">均衡分配</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>失败重试次数:</label>
-                                <input type="number" id="retryCount" value="3" min="0" max="10">
-                            </div>
-                            <div class="form-group">
-                                <label>验证码处理:</label>
-                                <select id="captchaHandler">
-                                    <option value="auto">自动识别</option>
-                                    <option value="manual">手动输入</option>
-                                    <option value="skip">跳过验证</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                     
@@ -270,7 +239,7 @@
                         <div style="margin-bottom: 15px; display: flex; gap: 10px;">
                             <button id="refreshAccountsBtn" class="btn btn-small"><i class="fas fa-sync"></i> 刷新列表</button>
                             <button id="deleteSelectedBtn" class="btn btn-danger btn-small"><i class="fas fa-trash"></i> 删除选中</button>
-                            <button id="importAccountsBtn" class="btn btn-small"><i class="fas fa-file-import"></i> 导入账号</button>
+                            <button id="exportAccountsBtn" class="btn btn-success btn-small"><i class="fas fa-file-export"></i> 导出账号</button>
                         </div>
                         <div style="max-height: 400px; overflow-y: auto;">
                             <table class="data-table">
@@ -278,10 +247,10 @@
                                     <tr>
                                         <th><input type="checkbox" id="selectAll"></th>
                                         <th>ID</th>
-                                        <th>手机号</th>
+                                        <th>邮箱账号</th>
+                                        <th>密码</th>
                                         <th>状态</th>
                                         <th>注册时间</th>
-                                        <th>最后使用</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -292,41 +261,25 @@
                         </div>
                     </div>
                     
-                    <div class="card-grid">
-                        <div class="card">
-                            <h3><i class="fas fa-chart-bar"></i> 账号统计</h3>
-                            <div class="status-display">
-                                <div class="status-item">
-                                    <span class="label">总账号数:</span>
-                                    <span class="value" id="totalAccounts">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">可用账号:</span>
-                                    <span class="value" id="availableAccounts">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">封禁账号:</span>
-                                    <span class="value" id="bannedAccounts">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">今日注册:</span>
-                                    <span class="value" id="todayRegistered">0</span>
-                                </div>
+                    <div class="card">
+                        <h3><i class="fas fa-chart-bar"></i> 账号统计</h3>
+                        <div class="status-display">
+                            <div class="status-item">
+                                <span class="label">总账号数:</span>
+                                <span class="value" id="totalAccounts">0</span>
                             </div>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-tools"></i> 批量操作</h3>
-                            <div class="form-group">
-                                <label>选择操作:</label>
-                                <select id="batchOperation">
-                                    <option value="export">导出选中账号</option>
-                                    <option value="delete">删除选中账号</option>
-                                    <option value="check">检查账号状态</option>
-                                    <option value="activate">激活选中账号</option>
-                                </select>
+                            <div class="status-item">
+                                <span class="label">可用账号:</span>
+                                <span class="value" id="availableAccounts">0</span>
                             </div>
-                            <button id="executeBatchBtn" class="btn"><i class="fas fa-play"></i> 执行操作</button>
+                            <div class="status-item">
+                                <span class="label">封禁账号:</span>
+                                <span class="value" id="bannedAccounts">0</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">今日注册:</span>
+                                <span class="value" id="todayRegistered">0</span>
+                            </div>
                         </div>
                     </div>
                 </div>

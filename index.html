@@ -356,6 +356,67 @@
             font-size: 0.9rem;
         }
         
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -382,10 +443,7 @@
         
         <div class="main-content">
             <div class="sidebar">
-                <div class="nav-item active" data-target="sms-platform">
-                    <i class="fas fa-sms"></i>接码平台
-                </div>
-                <div class="nav-item" data-target="account-manager">
+                <div class="nav-item active" data-target="account-manager">
                     <i class="fas fa-users"></i>账户管理
                 </div>
                 <div class="nav-item" data-target="message-center">
@@ -397,111 +455,53 @@
             </div>
             
             <div class="content">
-                <!-- 接码平台部分 -->
-                <div class="section active" id="sms-platform">
-                    <h2 class="section-title">免费邮箱接码平台</h2>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">平台选择</h3>
-                        </div>
-                        <p>选择以下免费邮箱接码平台，无需选择国家地区</p>
-                        
-                        <div class="platform-grid">
-                            <div class="platform-card active">
-                                <div class="platform-icon">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="platform-name">临时邮箱</div>
-                                <div class="platform-status">在线</div>
-                            </div>
-                            
-                            <div class="platform-card">
-                                <div class="platform-icon">
-                                    <i class="fas fa-mail-bulk"></i>
-                                </div>
-                                <div class="platform-name">10分钟邮箱</div>
-                                <div class="platform-status">在线</div>
-                            </div>
-                            
-                            <div class="platform-card">
-                                <div class="platform-icon">
-                                    <i class="fas fa-inbox"></i>
-                                </div>
-                                <div class="platform-name">Guerrilla邮箱</div>
-                                <div class="platform-status">在线</div>
-                            </div>
-                            
-                            <div class="platform-card">
-                                <div class="platform-icon">
-                                    <i class="fas fa-at"></i>
-                                </div>
-                                <div class="platform-name">YOPmail</div>
-                                <div class="platform-status">在线</div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group" style="margin-top: 20px;">
-                            <label for="email-address">邮箱地址</label>
-                            <input type="text" id="email-address" class="form-control" placeholder="将自动生成临时邮箱地址">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="verification-code">验证码</label>
-                            <input type="text" id="verification-code" class="form-control" placeholder="收到验证码后将自动显示">
-                        </div>
-                        
-                        <button class="btn btn-success">
-                            <i class="fas fa-sync-alt"></i>获取验证码
+                <!-- 账户管理部分 -->
+                <div class="section active" id="account-manager">
+                    <div class="card-header" style="margin-bottom: 20px;">
+                        <h2 class="section-title">账户管理</h2>
+                        <button class="btn" id="open-registration-modal">
+                            <i class="fas fa-plus"></i>注册新账户
                         </button>
                     </div>
                     
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">接码记录</h3>
-                        </div>
-                        
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>邮箱地址</th>
-                                        <th>平台</th>
-                                        <th>验证码</th>
+                                        <th>用户名</th>
+                                        <th>手机号</th>
                                         <th>状态</th>
-                                        <th>时间</th>
+                                        <th>注册时间</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>temp1234@tempmail.com</td>
-                                        <td>临时邮箱</td>
-                                        <td>584392</td>
-                                        <td><span class="status-badge status-success">成功</span></td>
-                                        <td>2023-06-15 14:30</td>
+                                        <td>user12345</td>
+                                        <td>+86 *******1234</td>
+                                        <td><span class="status-badge status-success">正常</span></td>
+                                        <td>2023-06-10 09:30</td>
                                         <td class="action-buttons">
                                             <button class="action-btn view">查看</button>
                                             <button class="action-btn delete">删除</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>user5678@10minutemail.com</td>
-                                        <td>10分钟邮箱</td>
-                                        <td>729185</td>
-                                        <td><span class="status-badge status-success">成功</span></td>
-                                        <td>2023-06-15 13:45</td>
+                                        <td>potato_user</td>
+                                        <td>+86 *******5678</td>
+                                        <td><span class="status-badge status-success">正常</span></td>
+                                        <td>2023-06-08 14:22</td>
                                         <td class="action-buttons">
                                             <button class="action-btn view">查看</button>
                                             <button class="action-btn delete">删除</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>testacc@guerrillamail.com</td>
-                                        <td>Guerrilla邮箱</td>
-                                        <td>-</td>
-                                        <td><span class="status-badge status-warning">等待中</span></td>
-                                        <td>2023-06-15 12:20</td>
+                                        <td>test_account</td>
+                                        <td>+86 *******9012</td>
+                                        <td><span class="status-badge status-warning">待验证</span></td>
+                                        <td>2023-06-15 11:05</td>
                                         <td class="action-buttons">
                                             <button class="action-btn view">查看</button>
                                             <button class="action-btn delete">删除</button>
@@ -510,14 +510,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- 账户管理部分 -->
-                <div class="section" id="account-manager">
-                    <h2 class="section-title">账户管理</h2>
-                    <div class="card">
-                        <p>账户管理功能正在开发中...</p>
                     </div>
                 </div>
                 
@@ -541,6 +533,85 @@
         
         <div class="footer">
             <p>Potato批量管理工具 &copy; 2023 - 专为高效管理设计</p>
+        </div>
+    </div>
+
+    <!-- 注册配置接码平台窗口 -->
+    <div class="modal" id="registration-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">注册新账户</h3>
+                <button class="modal-close" id="close-registration-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" class="form-control" placeholder="请输入用户名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" class="form-control" placeholder="请输入密码">
+                </div>
+                
+                <div class="form-group">
+                    <label>接码平台配置</label>
+                    <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 10px;">
+                        选择以下免费邮箱接码平台，无需选择国家地区
+                    </p>
+                    
+                    <div class="platform-grid">
+                        <div class="platform-card active">
+                            <div class="platform-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="platform-name">临时邮箱</div>
+                            <div class="platform-status">在线</div>
+                        </div>
+                        
+                        <div class="platform-card">
+                            <div class="platform-icon">
+                                <i class="fas fa-mail-bulk"></i>
+                            </div>
+                            <div class="platform-name">10分钟邮箱</div>
+                            <div class="platform-status">在线</div>
+                        </div>
+                        
+                        <div class="platform-card">
+                            <div class="platform-icon">
+                                <i class="fas fa-inbox"></i>
+                            </div>
+                            <div class="platform-name">Guerrilla邮箱</div>
+                            <div class="platform-status">在线</div>
+                        </div>
+                        
+                        <div class="platform-card">
+                            <div class="platform-icon">
+                                <i class="fas fa-at"></i>
+                            </div>
+                            <div class="platform-name">YOPmail</div>
+                            <div class="platform-status">在线</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="email-address">邮箱地址</label>
+                        <input type="text" id="email-address" class="form-control" placeholder="将自动生成临时邮箱地址">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="verification-code">验证码</label>
+                        <input type="text" id="verification-code" class="form-control" placeholder="收到验证码后将自动显示">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="cancel-registration">取消</button>
+                <button class="btn btn-success" id="get-verification-code">
+                    <i class="fas fa-sync-alt"></i>获取验证码
+                </button>
+                <button class="btn" id="confirm-registration">注册账户</button>
+            </div>
         </div>
     </div>
 
@@ -573,11 +644,43 @@
                     c.classList.remove('active');
                 });
                 this.classList.add('active');
+                
+                // 自动生成邮箱地址
+                const platformName = this.querySelector('.platform-name').textContent;
+                const emailInput = document.getElementById('email-address');
+                
+                if (platformName === '临时邮箱') {
+                    emailInput.value = `temp${Math.floor(1000 + Math.random() * 9000)}@tempmail.com`;
+                } else if (platformName === '10分钟邮箱') {
+                    emailInput.value = `user${Math.floor(1000 + Math.random() * 9000)}@10minutemail.com`;
+                } else if (platformName === 'Guerrilla邮箱') {
+                    emailInput.value = `test${Math.floor(1000 + Math.random() * 9000)}@guerrillamail.com`;
+                } else if (platformName === 'YOPmail') {
+                    emailInput.value = `potato${Math.floor(1000 + Math.random() * 9000)}@yopmail.com`;
+                }
             });
         });
         
+        // 注册模态窗口控制
+        const registrationModal = document.getElementById('registration-modal');
+        const openRegistrationBtn = document.getElementById('open-registration-modal');
+        const closeRegistrationBtn = document.getElementById('close-registration-modal');
+        const cancelRegistrationBtn = document.getElementById('cancel-registration');
+        
+        openRegistrationBtn.addEventListener('click', function() {
+            registrationModal.classList.add('active');
+        });
+        
+        closeRegistrationBtn.addEventListener('click', function() {
+            registrationModal.classList.remove('active');
+        });
+        
+        cancelRegistrationBtn.addEventListener('click', function() {
+            registrationModal.classList.remove('active');
+        });
+        
         // 模拟获取验证码
-        document.querySelector('.btn-success').addEventListener('click', function() {
+        document.getElementById('get-verification-code').addEventListener('click', function() {
             const codeInput = document.getElementById('verification-code');
             const statusElement = document.querySelector('.platform-card.active .platform-status');
             
@@ -600,34 +703,72 @@
                 // 更新状态
                 statusElement.textContent = '成功';
                 statusElement.className = 'platform-status status-success';
-                
-                // 添加到接码记录
+            }, 2000);
+        });
+        
+        // 确认注册
+        document.getElementById('confirm-registration').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const verificationCode = document.getElementById('verification-code').value;
+            
+            if (!username || !password) {
+                alert('请填写用户名和密码');
+                return;
+            }
+            
+            if (!verificationCode) {
+                alert('请先获取验证码');
+                return;
+            }
+            
+            // 模拟注册过程
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>注册中...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                // 添加到账户列表
                 const tableBody = document.querySelector('table tbody');
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td>auto${Math.floor(1000 + Math.random() * 9000)}@tempmail.com</td>
-                    <td>临时邮箱</td>
-                    <td>${randomCode}</td>
-                    <td><span class="status-badge status-success">成功</span></td>
+                    <td>${username}</td>
+                    <td>+86 *******${Math.floor(1000 + Math.random() * 9000)}</td>
+                    <td><span class="status-badge status-success">正常</span></td>
                     <td>${new Date().toLocaleString()}</td>
                     <td class="action-buttons">
                         <button class="action-btn view">查看</button>
                         <button class="action-btn delete">删除</button>
                     </td>
                 `;
-                tableBody.insertBefore(newRow, tableBody.firstChild);
+                tableBody.appendChild(newRow);
                 
                 // 添加删除功能
                 newRow.querySelector('.action-btn.delete').addEventListener('click', function() {
                     newRow.remove();
                 });
-            }, 2000);
+                
+                // 关闭模态窗口
+                registrationModal.classList.remove('active');
+                
+                // 重置表单
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('verification-code').value = '';
+                
+                // 恢复按钮状态
+                this.innerHTML = '注册账户';
+                this.disabled = false;
+                
+                alert('账户注册成功！');
+            }, 1500);
         });
         
-        // 删除记录功能
+        // 删除账户功能
         document.querySelectorAll('.action-btn.delete').forEach(btn => {
             btn.addEventListener('click', function() {
-                this.closest('tr').remove();
+                if (confirm('确定要删除此账户吗？')) {
+                    this.closest('tr').remove();
+                }
             });
         });
     </script>

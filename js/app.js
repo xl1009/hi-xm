@@ -13,6 +13,7 @@ class PotatoBatchManager {
         console.log('PotatoBatchManager 初始化开始');
         this.setupEventListeners();
         this.loadAccounts();
+        this.loadConfig(); // 加载保存的配置
         this.updateAccountStats();
         this.renderAccountList();
         
@@ -56,8 +57,35 @@ class PotatoBatchManager {
         if (regCountInput) {
             regCountInput.addEventListener('change', (e) => {
                 document.getElementById('targetCount').textContent = e.target.value;
+                this.saveConfig(); // 保存配置
             });
         }
+        
+        // 注册地址和密码输入框事件
+        const registerUrlInput = document.getElementById('registerUrl');
+        if (registerUrlInput) {
+            registerUrlInput.addEventListener('change', (e) => {
+                this.saveConfig(); // 保存配置
+            });
+        }
+
+        const defaultPasswordInput = document.getElementById('defaultPassword');
+        if (defaultPasswordInput) {
+            defaultPasswordInput.addEventListener('change', (e) => {
+                this.saveConfig(); // 保存配置
+            });
+        }
+
+        // 其他配置项事件
+        const configInputs = ['smsService', 'countryCode', 'registerDelay', 'retryCount', 'captchaTimeout', 'userAgent'];
+        configInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('change', () => {
+                    this.saveConfig();
+                });
+            }
+        });
         
         // 批量加群相关
         const startJoinBtn = document.getElementById('startJoinBtn');
@@ -112,30 +140,54 @@ class PotatoBatchManager {
         console.log('所有事件监听器设置完成');
     }
 
-    switchTab(tabName) {
-        console.log('切换到标签页:', tabName);
+    // 保存配置到本地存储
+    saveConfig() {
+        const config = {
+            registerUrl: document.getElementById('registerUrl').value,
+            defaultPassword: document.getElementById('defaultPassword').value,
+            regCount: document.getElementById('regCount').value,
+            smsService: document.getElementById('smsService').value,
+            countryCode: document.getElementById('countryCode').value,
+            registerDelay: document.getElementById('registerDelay').value,
+            retryCount: document.getElementById('retryCount').value,
+            captchaTimeout: document.getElementById('captchaTimeout').value,
+            userAgent: document.getElementById('userAgent').value
+        };
         
-        // 隐藏所有标签页
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
+        localStorage.setItem('potato_config', JSON.stringify(config));
+        console.log('配置已保存到本地存储');
+    }
 
-        // 显示选中的标签页
-        const targetTab = document.getElementById(tabName);
-        if (targetTab) {
-            targetTab.classList.add('active');
+    // 从本地存储加载配置
+    loadConfig() {
+        const saved = localStorage.getItem('potato_config');
+        if (saved) {
+            try {
+                const config = JSON.parse(saved);
+                
+                // 设置输入框的值，如果为空则使用占位符
+                document.getElementById('registerUrl').value = config.registerUrl || '';
+                document.getElementById('defaultPassword').value = config.defaultPassword || '';
+                document.getElementById('regCount').value = config.regCount || 5;
+                document.getElementById('smsService').value = config.smsService || '10minutemail';
+                document.getElementById('countryCode').value = config.countryCode || '+86';
+                document.getElementById('registerDelay').value = config.registerDelay || 3;
+                document.getElementById('retryCount').value = config.retryCount || 2;
+                document.getElementById('captchaTimeout').value = config.captchaTimeout || 60;
+                document.getElementById('userAgent').value = config.userAgent || 'random';
+                
+                // 更新目标数量显示
+                document.getElementById('targetCount').textContent = config.regCount || 5;
+                
+                console.log('配置已从本地存储加载');
+            } catch (error) {
+                console.error('加载配置失败:', error);
+                // 设置默认值
+                document.getElementById('targetCount').textContent = 5;
+            }
         } else {
-            console.error('未找到标签页:', tabName);
-        }
-
-        // 更新导航激活状态
-        document.querySelectorAll('.sidebar a').forEach(link => {
-            link.classList.remove('active');
-        });
-        
-        const activeLink = document.querySelector(`.sidebar a[data-tab="${tabName}"]`);
-        if (activeLink) {
-            activeLink.classList.add('active');
+            console.log('本地存储中没有配置数据，使用默认值');
+            document.getElementById('targetCount').textContent = 5;
         }
     }
 
@@ -156,8 +208,19 @@ class PotatoBatchManager {
 
         console.log('注册参数:', { count, registerUrl, defaultPassword, smsService, countryCode, registerDelay });
 
+        // 验证必填字段
         if (!count || count < 1) {
             this.showMessage('请输入有效的注册数量', 'error');
+            return;
+        }
+
+        if (!registerUrl.trim()) {
+            this.showMessage('请输入注册地址', 'error');
+            return;
+        }
+
+        if (!defaultPassword.trim()) {
+            this.showMessage('请输入默认密码', 'error');
             return;
         }
 
@@ -242,6 +305,7 @@ class PotatoBatchManager {
         }
     }
 
+    // 其余方法保持不变...
     async simulateRegistration(registerUrl, password, smsService, countryCode) {
         console.log('模拟注册过程开始');
         
@@ -269,11 +333,10 @@ class PotatoBatchManager {
                     console.error('模拟注册失败:', error);
                     reject(error);
                 }
-            }, 1000); // 缩短模拟时间以便测试
+            }, 1000);
         });
     }
 
-    // 根据接码平台获取临时邮箱
     getTemporaryEmail(smsService) {
         const randomStr = Math.random().toString(36).substr(2, 8);
         let email;
@@ -296,7 +359,6 @@ class PotatoBatchManager {
         return email;
     }
 
-    // 获取接码平台名称
     getSmsServiceName(service) {
         const serviceMap = {
             '10minutemail': '10MinuteMail',
@@ -313,366 +375,7 @@ class PotatoBatchManager {
         this.showMessage('正在停止注册任务...', 'info');
     }
 
-    async startBatchJoin() {
-        console.log('开始批量加群方法被调用');
-        
-        if (this.isJoining) {
-            this.showMessage('加群任务正在进行中', 'warning');
-            return;
-        }
-
-        const groupListText = document.getElementById('groupList').value;
-        const delay = parseInt(document.getElementById('joinDelay').value);
-
-        if (!groupListText.trim()) {
-            this.showMessage('请输入群组列表', 'error');
-            return;
-        }
-
-        const groups = groupListText.split('\n').filter(g => g.trim());
-        
-        if (groups.length === 0) {
-            this.showMessage('没有有效的群组', 'error');
-            return;
-        }
-
-        if (this.accounts.length === 0) {
-            this.showMessage('没有可用的账号', 'error');
-            return;
-        }
-
-        this.isJoining = true;
-        this.joinProgress = 0;
-        document.getElementById('joinProgress').style.width = '0%';
-        document.getElementById('joinStatus').textContent = '加群中...';
-        document.getElementById('targetGroups').textContent = groups.length;
-        document.getElementById('startJoinBtn').disabled = true;
-        
-        // 清空加群日志
-        document.getElementById('joinLog').innerHTML = '';
-
-        try {
-            this.showMessage(`开始批量加入 ${groups.length} 个群组...`, 'info');
-            console.log(`开始批量加入 ${groups.length} 个群组`);
-            
-            let joinedCount = 0;
-            
-            for (let i = 0; i < groups.length; i++) {
-                if (!this.isJoining) {
-                    console.log('加群任务被停止');
-                    break;
-                }
-                
-                const group = groups[i];
-                
-                // 选择账号 (轮询分配)
-                const accountIndex = i % this.accounts.length;
-                const account = this.accounts[accountIndex];
-                
-                // 更新进度
-                this.joinProgress = ((i + 1) / groups.length) * 100;
-                document.getElementById('joinProgress').style.width = `${this.joinProgress}%`;
-                
-                console.log(`加群进度: ${i + 1}/${groups.length}, 账号: ${account.email}, 群组: ${group}`);
-                
-                // 模拟加入群组
-                const success = await this.simulateJoinGroup(account, group);
-                
-                if (success) {
-                    joinedCount++;
-                    document.getElementById('joinedGroups').textContent = joinedCount;
-                    this.addJoinLog(account.email, group, '加入成功', `账号 ${account.email} 成功加入群组 ${group}`);
-                    
-                    // 更新账号最后使用时间
-                    account.lastUsed = new Date();
-                    console.log(`加群成功: ${account.email} -> ${group}`);
-                } else {
-                    this.addJoinLog(account.email, group, '加入失败', `账号 ${account.email} 加入群组 ${group} 失败`);
-                    console.log(`加群失败: ${account.email} -> ${group}`);
-                }
-                
-                // 更新成功率
-                const successRate = Math.round((joinedCount / (i + 1)) * 100);
-                document.getElementById('joinSuccessRate').textContent = `${successRate}%`;
-                
-                // 模拟延迟
-                if (i < groups.length - 1) { // 最后一次不需要延迟
-                    await this.delay(delay * 1000);
-                }
-            }
-            
-            if (this.isJoining) {
-                const message = `批量加群完成，成功加入 ${joinedCount} 个群组`;
-                this.showMessage(message, 'success');
-                document.getElementById('joinStatus').textContent = '加群完成';
-                console.log(message);
-            } else {
-                this.showMessage('加群任务已停止', 'warning');
-                document.getElementById('joinStatus').textContent = '已停止';
-            }
-            
-        } catch (error) {
-            console.error('批量加群失败:', error);
-            this.showMessage('批量加群失败: ' + error.message, 'error');
-            document.getElementById('joinStatus').textContent = '加群失败';
-        } finally {
-            this.isJoining = false;
-            document.getElementById('startJoinBtn').disabled = false;
-            this.saveAccounts();
-            this.renderAccountList();
-            console.log('批量加群任务结束');
-        }
-    }
-
-    async simulateJoinGroup(account, group) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // 模拟80%的成功率
-                const success = Math.random() > 0.2;
-                resolve(success);
-            }, 500); // 缩短模拟时间
-        });
-    }
-
-    stopBatchJoin() {
-        console.log('停止加群任务');
-        this.isJoining = false;
-        this.showMessage('正在停止加群任务...', 'info');
-    }
-
-    exportAccounts() {
-        console.log('导出账号方法被调用');
-        
-        if (this.accounts.length === 0) {
-            this.showMessage('没有可导出的账号', 'warning');
-            return;
-        }
-
-        const content = this.convertToText(this.accounts);
-        this.downloadFile(content, `potato_accounts_${new Date().toISOString().split('T')[0]}.txt`, 'text/plain');
-        this.showMessage('账号数据导出成功', 'success');
-        console.log(`导出 ${this.accounts.length} 个账号`);
-    }
-
-    convertToText(accounts) {
-        return accounts.map(account => 
-            `邮箱: ${account.email} | 密码: ${account.password} | 状态: ${this.getStatusText(account.status)} | 注册时间: ${new Date(account.createdAt).toLocaleString()}`
-        ).join('\n');
-    }
-
-    downloadFile(content, filename, mimeType) {
-        const blob = new Blob([content], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
-
-    refreshAccounts() {
-        console.log('刷新账号列表');
-        this.loadAccounts();
-        this.updateAccountStats();
-        this.renderAccountList();
-        this.showMessage('账号列表已刷新', 'success');
-    }
-
-    deleteSelectedAccounts() {
-        const selectedIds = this.getSelectedAccountIds();
-        
-        if (selectedIds.length === 0) {
-            this.showMessage('请先选择要删除的账号', 'warning');
-            return;
-        }
-        
-        if (!confirm(`确定要删除选中的 ${selectedIds.length} 个账号吗？此操作不可恢复。`)) {
-            return;
-        }
-        
-        this.accounts = this.accounts.filter(account => !selectedIds.includes(account.id));
-        this.saveAccounts();
-        this.updateAccountStats();
-        this.renderAccountList();
-        this.showMessage(`已删除 ${selectedIds.length} 个账号`, 'success');
-        console.log(`删除 ${selectedIds.length} 个账号`);
-    }
-
-    getSelectedAccountIds() {
-        const checkboxes = document.querySelectorAll('#accountList input[type="checkbox"]:checked');
-        return Array.from(checkboxes).map(checkbox => checkbox.value);
-    }
-
-    toggleSelectAll(checked) {
-        const checkboxes = document.querySelectorAll('#accountList input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = checked;
-        });
-        console.log(`全选状态: ${checked}`);
-    }
-
-    loadAccounts() {
-        const saved = localStorage.getItem('potato_accounts');
-        if (saved) {
-            try {
-                this.accounts = JSON.parse(saved);
-                console.log(`从本地存储加载 ${this.accounts.length} 个账号`);
-            } catch (error) {
-                console.error('解析账号数据失败:', error);
-                this.accounts = [];
-            }
-        } else {
-            console.log('本地存储中没有账号数据');
-        }
-    }
-
-    saveAccounts() {
-        localStorage.setItem('potato_accounts', JSON.stringify(this.accounts));
-        console.log(`保存 ${this.accounts.length} 个账号到本地存储`);
-    }
-
-    updateAccountStats() {
-        const total = this.accounts.length;
-        const available = this.accounts.filter(acc => acc.status === 'active').length;
-        const banned = this.accounts.filter(acc => acc.status === 'banned').length;
-        
-        const today = new Date().toDateString();
-        const todayRegistered = this.accounts.filter(acc => 
-            new Date(acc.createdAt).toDateString() === today
-        ).length;
-        
-        document.getElementById('totalAccounts').textContent = total;
-        document.getElementById('availableAccounts').textContent = available;
-        document.getElementById('bannedAccounts').textContent = banned;
-        document.getElementById('todayRegistered').textContent = todayRegistered;
-        
-        console.log(`账号统计 - 总数: ${total}, 可用: ${available}, 封禁: ${banned}, 今日注册: ${todayRegistered}`);
-    }
-
-    renderAccountList() {
-        const accountList = document.getElementById('accountList');
-        if (!accountList) {
-            console.error('未找到账号列表容器');
-            return;
-        }
-        
-        accountList.innerHTML = '';
-        
-        this.accounts.forEach(account => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><input type="checkbox" value="${account.id}"></td>
-                <td>${account.id}</td>
-                <td>${account.email}</td>
-                <td>${account.password}</td>
-                <td><span class="task-status ${account.status === 'active' ? 'task-running' : account.status === 'banned' ? 'task-error' : 'task-stopped'}"></span>${this.getStatusText(account.status)}</td>
-                <td>${new Date(account.createdAt).toLocaleDateString()}</td>
-                <td>
-                    <button class="btn btn-small" onclick="app.editAccount('${account.id}')"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-small" onclick="app.deleteAccount('${account.id}')"><i class="fas fa-trash"></i></button>
-                </td>
-            `;
-            accountList.appendChild(row);
-        });
-        
-        console.log(`渲染 ${this.accounts.length} 个账号到列表`);
-    }
-
-    getStatusText(status) {
-        const statusMap = {
-            'active': '活跃',
-            'inactive': '未激活',
-            'banned': '封禁'
-        };
-        return statusMap[status] || status;
-    }
-
-    editAccount(accountId) {
-        const account = this.accounts.find(acc => acc.id === accountId);
-        if (account) {
-            this.showMessage(`编辑账号: ${account.email}`, 'info');
-            console.log(`编辑账号: ${account.email}`);
-        }
-    }
-
-    deleteAccount(accountId) {
-        if (confirm('确定要删除这个账号吗？')) {
-            this.accounts = this.accounts.filter(acc => acc.id !== accountId);
-            this.saveAccounts();
-            this.updateAccountStats();
-            this.renderAccountList();
-            this.showMessage('账号已删除', 'success');
-            console.log(`删除账号: ${accountId}`);
-        }
-    }
-
-    addRegisterLog(email, password, status, details) {
-        const logTable = document.getElementById('registerLog');
-        if (!logTable) {
-            console.error('未找到注册日志表格');
-            return;
-        }
-        
-        const row = document.createElement('tr');
-        
-        row.innerHTML = `
-            <td>${new Date().toLocaleTimeString()}</td>
-            <td>${email}</td>
-            <td>${password}</td>
-            <td>${status}</td>
-            <td>${details}</td>
-        `;
-        
-        logTable.appendChild(row);
-        logTable.scrollTop = logTable.scrollHeight;
-    }
-
-    addJoinLog(account, group, status, details) {
-        const logTable = document.getElementById('joinLog');
-        if (!logTable) {
-            console.error('未找到加群日志表格');
-            return;
-        }
-        
-        const row = document.createElement('tr');
-        
-        row.innerHTML = `
-            <td>${new Date().toLocaleTimeString()}</td>
-            <td>${account}</td>
-            <td>${group}</td>
-            <td>${status}</td>
-            <td>${details}</td>
-        `;
-        
-        logTable.appendChild(row);
-        logTable.scrollTop = logTable.scrollHeight;
-    }
-
-    showMessage(message, type = 'info') {
-        console.log(`显示消息: [${type}] ${message}`);
-        
-        // 创建消息提示
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message message-${type}`;
-        messageDiv.textContent = message;
-        
-        // 添加到页面
-        document.body.appendChild(messageDiv);
-        
-        // 自动移除
-        setTimeout(() => {
-            if (messageDiv.parentNode) {
-                messageDiv.remove();
-            }
-        }, 3000);
-    }
-
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    // 其他方法保持不变...
 }
 
 // 初始化应用

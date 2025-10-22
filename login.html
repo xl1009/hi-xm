@@ -109,23 +109,10 @@
             border: 1px solid #feb2b2;
         }
         
-        .demo-info {
-            background: #e6fffa;
-            border: 1px solid #81e6d9;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        
-        .demo-info h4 {
-            color: #234e52;
-            margin-bottom: 8px;
-        }
-        
-        .demo-info p {
-            color: #2d7a7a;
-            margin: 5px 0;
+        .message-success {
+            background: #c6f6d5;
+            color: #276749;
+            border: 1px solid #9ae6b4;
         }
     </style>
 </head>
@@ -136,7 +123,7 @@
             <p>专业批量注册与加群解决方案</p>
         </div>
         
-        <div id="errorMessage" class="message message-error"></div>
+        <div id="errorMessage" class="message"></div>
         
         <form id="loginForm">
             <div class="form-group">
@@ -153,8 +140,6 @@
                 <i class="fas fa-sign-in-alt"></i> 登录
             </button>
         </form>
-        
-       
     </div>
 
     <script>
@@ -167,7 +152,7 @@
                 const currentTime = new Date().getTime();
                 const loginTimestamp = parseInt(loginTime);
                 
-                // 检查是否在24小时内登录（24 * 60 * 60 * 1000 = 86400000 毫秒）
+                // 检查是否在24小时内登录
                 if (currentTime - loginTimestamp < 86400000) {
                     window.location.href = 'index.html';
                     return true;
@@ -182,60 +167,42 @@
 
         // 页面加载时检查登录状态
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('页面加载完成，检查登录状态...');
             checkLoginStatus();
             
             // 设置表单提交事件
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                console.log('表单提交事件触发');
                 
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const errorMessage = document.getElementById('errorMessage');
                 
-                console.log('输入的用户名:', username);
-                console.log('输入的密码:', password);
-                
                 // 验证账号密码
                 if (username === '0319' && password === '0319') {
-                    console.log('登录成功，设置登录状态');
-                    
                     // 设置登录状态
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('loginTime', new Date().getTime().toString());
                     
                     // 显示成功消息
                     errorMessage.textContent = '登录成功，正在跳转...';
+                    errorMessage.className = 'message message-success';
                     errorMessage.style.display = 'block';
-                    errorMessage.style.background = '#c6f6d5';
-                    errorMessage.style.color = '#276749';
-                    errorMessage.style.borderColor = '#9ae6b4';
                     
                     // 延迟跳转，让用户看到成功消息
                     setTimeout(function() {
-                        console.log('跳转到主页面');
                         window.location.href = 'index.html';
                     }, 1000);
                     
                 } else {
-                    console.log('登录失败：账号或密码错误');
-                    errorMessage.textContent = '账号或密码错误！请使用账号：0319 密码：0319';
+                    errorMessage.textContent = '账号或密码错误！';
+                    errorMessage.className = 'message message-error';
                     errorMessage.style.display = 'block';
                     
                     // 清空密码框
                     document.getElementById('password').value = '';
                 }
             });
-            
-            // 自动填充演示账号（仅用于测试）
-            document.getElementById('username').value = '0319';
-            document.getElementById('password').value = '0319';
         });
-
-        // 添加控制台日志，帮助调试
-        console.log('登录页面脚本加载完成');
     </script>
 </body>
 </html>
-

@@ -56,121 +56,47 @@
                     <div class="card-grid">
                         <div class="card">
                             <h3><i class="fas fa-cogs"></i> 注册配置</h3>
-                            
-                            <!-- 注册方式选择 -->
-                            <div class="form-group">
-                                <label>注册方式:</label>
-                                <div style="display: flex; gap: 20px; margin-top: 10px;">
-                                    <label style="display: flex; align-items: center; cursor: pointer;">
-                                        <input type="radio" name="registrationMethod" value="free" checked style="margin-right: 8px;">
-                                        <i class="fas fa-envelope" style="color: #52c41a; margin-right: 5px;"></i>
-                                        免费邮箱接码
-                                    </label>
-                                    <label style="display: flex; align-items: center; cursor: pointer;">
-                                        <input type="radio" name="registrationMethod" value="paid" style="margin-right: 8px;">
-                                        <i class="fas fa-mobile-alt" style="color: #1890ff; margin-right: 5px;"></i>
-                                        付费手机接码
-                                    </label>
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label>注册数量:</label>
-                                <input type="number" id="regCount" value="3" min="1" max="50">
+                                <input type="number" id="regCount" value="5" min="1" max="50">
                             </div>
-
-                            <!-- 免费邮箱服务配置 -->
-                            <div id="freeEmailConfig" class="registration-config">
-                                <div class="form-group">
-                                    <label>免费邮箱服务:</label>
-                                    <select id="freeEmailService">
-                                        <option value="10minutemail">10MinuteMail (推荐)</option>
-                                        <option value="guerrillamail">GuerrillaMail</option>
-                                        <option value="temp-mail">Temp-Mail</option>
-                                        <option value="yopmail">YopMail</option>
-                                        <option value="maildrop">MailDrop</option>
-                                        <option value="throwawaymail">ThrowAwayMail</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>注册地址:</label>
-                                    <input type="text" id="registerUrl" placeholder="请输入Potato注册地址" style="background-color: white; cursor: text;">
-                                </div>
-                                <div class="form-group">
-                                    <label>默认密码:</label>
-                                    <input type="text" id="defaultPassword" placeholder="请输入默认密码" style="background-color: white; cursor: text;">
-                                </div>
-                            </div>
-
-                            <!-- 付费手机接码配置 -->
-                            <div id="paidSmsConfig" class="registration-config" style="display: none;">
-                                <div class="form-group">
-                                    <label>接码平台:</label>
-                                    <select id="smsService">
-                                        <option value="5sim">5Sim.net</option>
-                                        <option value="sms-activate">SMS-Activate</option>
-                                        <option value="onlinesim">OnlineSim</option>
-                                        <option value="other">其他平台</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>API密钥:</label>
-                                    <input type="text" id="apiKey" placeholder="请输入接码平台API密钥">
-                                </div>
-                                <div class="form-group">
-                                    <label>国家/地区:</label>
-                                    <select id="countryCode">
-                                        <option value="+86">中国 (+86)</option>
-                                        <option value="+1">美国 (+1)</option>
-                                        <option value="+44">英国 (+44)</option>
-                                        <option value="+7">俄罗斯 (+7)</option>
-                                        <option value="+49">德国 (+49)</option>
-                                        <option value="+33">法国 (+33)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>注册地址:</label>
-                                    <input type="text" id="paidRegisterUrl" placeholder="请输入Potato注册地址" style="background-color: white; cursor: text;">
-                                </div>
-                                <div class="form-group">
-                                    <label>默认密码:</label>
-                                    <input type="text" id="paidDefaultPassword" placeholder="请输入默认密码" style="background-color: white; cursor: text;">
-                                </div>
-                            </div>
-
                             <div class="form-group">
-                                <label>注册间隔 (秒):</label>
-                                <input type="number" id="registerDelay" value="5" min="3" max="60">
+                                <label>注册地址:</label>
+                                <input type="text" id="registerUrl" value="https://potato160.org/dl" placeholder="请输入注册地址">
                             </div>
-
-                            <button id="startRegisterBtn" class="btn btn-success">
-                                <i class="fas fa-play"></i> 开始注册
-                            </button>
-
-                            <!-- 免费服务提示 -->
-                            <div id="freeServiceTips" class="service-tips" style="margin-top: 15px; padding: 10px; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 6px;">
-                                <h4 style="color: #389e0d; margin: 0 0 8px 0; font-size: 14px;">
-                                    <i class="fas fa-info-circle"></i> 免费服务提示
-                                </h4>
-                                <p style="color: #389e0d; margin: 0; font-size: 12px; line-height: 1.4;">
-                                    • 使用临时邮箱接收验证码<br>
-                                    • 完全免费，无需API密钥<br>
-                                    • 建议每次注册不超过5个账号<br>
-                                    • 如遇失败请更换邮箱服务
-                                </p>
+                            <div class="form-group">
+                                <label>接码平台:</label>
+                                <select id="smsService">
+                                    <option value="10minutemail">10MinuteMail</option>
+                                    <option value="tempmail">Temp-Mail</option>
+                                    <option value="guerrillamail">GuerrillaMail</option>
+                                    <option value="other">其他平台</option>
+                                </select>
                             </div>
+                            <div class="form-group">
+                                <label>默认密码:</label>
+                                <input type="text" id="defaultPassword" value="qwer1234" placeholder="请输入默认密码">
+                            </div>
+                            <div class="form-group">
+                                <label>国家/地区:</label>
+                                <select id="countryCode">
+                                    <option value="+86">中国 (+86)</option>
+                                    <option value="+1">美国 (+1)</option>
+                                    <option value="+44">英国 (+44)</option>
+                                    <option value="+7">俄罗斯 (+7)</option>
+                                    <option value="+49">德国 (+49)</option>
+                                    <option value="+33">法国 (+33)</option>
+                                </select>
+                            </div>
+                            <button id="startRegisterBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始注册</button>
                         </div>
                         
                         <div class="card">
                             <h3><i class="fas fa-tachometer-alt"></i> 注册状态</h3>
                             <div class="status-display">
                                 <div class="status-item">
-                                    <span class="label">注册方式:</span>
-                                    <span class="value" id="currentMethod">免费邮箱接码</span>
-                                </div>
-                                <div class="status-item">
                                     <span class="label">目标数量:</span>
-                                    <span class="value" id="targetCount">3</span>
+                                    <span class="value" id="targetCount">5</span>
                                 </div>
                                 <div class="status-item">
                                     <span class="label">已完成:</span>
@@ -194,6 +120,10 @@
                         <div class="card">
                             <h3><i class="fas fa-sliders-h"></i> 高级设置</h3>
                             <div class="form-group">
+                                <label>注册间隔 (秒):</label>
+                                <input type="number" id="registerDelay" value="3" min="1" max="30">
+                            </div>
+                            <div class="form-group">
                                 <label>失败重试次数:</label>
                                 <input type="number" id="retryCount" value="2" min="0" max="5">
                             </div>
@@ -210,25 +140,6 @@
                                     <option value="safari">Safari</option>
                                 </select>
                             </div>
-                            
-                            <!-- 免费邮箱服务状态 -->
-                            <div class="service-status">
-                                <h4 style="color: var(--dark); margin-bottom: 10px; font-size: 14px;">
-                                    <i class="fas fa-heart" style="color: #ff4d4f;"></i> 免费服务状态
-                                </h4>
-                                <div class="status-item">
-                                    <span class="label">10MinuteMail:</span>
-                                    <span class="value" style="color: var(--success);">✓ 可用</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">GuerrillaMail:</span>
-                                    <span class="value" style="color: var(--success);">✓ 可用</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">Temp-Mail:</span>
-                                    <span class="value" style="color: var(--warning);">⚠ 限流</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     
@@ -239,7 +150,7 @@
                                 <thead>
                                     <tr>
                                         <th>时间</th>
-                                        <th>邮箱/手机</th>
+                                        <th>邮箱账号</th>
                                         <th>密码</th>
                                         <th>状态</th>
                                         <th>详细信息</th>
@@ -336,9 +247,8 @@
                                     <tr>
                                         <th><input type="checkbox" id="selectAll"></th>
                                         <th>ID</th>
-                                        <th>邮箱/手机</th>
+                                        <th>邮箱账号</th>
                                         <th>密码</th>
-                                        <th>类型</th>
                                         <th>状态</th>
                                         <th>注册时间</th>
                                         <th>操作</th>
@@ -363,12 +273,8 @@
                                 <span class="value" id="availableAccounts">0</span>
                             </div>
                             <div class="status-item">
-                                <span class="label">免费邮箱账号:</span>
-                                <span class="value" id="freeEmailAccounts">0</span>
-                            </div>
-                            <div class="status-item">
-                                <span class="label">付费手机账号:</span>
-                                <span class="value" id="paidSmsAccounts">0</span>
+                                <span class="label">封禁账号:</span>
+                                <span class="value" id="bannedAccounts">0</span>
                             </div>
                             <div class="status-item">
                                 <span class="label">今日注册:</span>
@@ -381,7 +287,7 @@
         </div>
         
         <div class="footer">
-            <p>Potato批量管理工具 &copy; 2023 | 版本: v2.2.0 | 支持免费邮箱接码 | 数据存储于浏览器本地</p>
+            <p>Potato批量管理工具 &copy; 2023 | 版本: v2.1.0 | 数据存储于浏览器本地</p>
         </div>
     </div>
 

@@ -3,227 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potato批量管理工具</title>
+    <title>登录 - Potato批量管理工具</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .login-header p {
+            color: #666;
+        }
+        
+        .fa-potato {
+            color: #667eea;
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .message-error {
+            background: #fed7d7;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+        
+        .demo-info {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .demo-info h4 {
+            color: #234e52;
+            margin-bottom: 8px;
+        }
+        
+        .demo-info p {
+            color: #2d7a7a;
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-potato"></i> Potato批量管理工具</h1>
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-potato"></i> Potato管理工具</h1>
             <p>专业批量注册与加群解决方案</p>
-            <button id="logoutBtn" class="btn btn-danger" style="position: absolute; right: 30px; top: 30px;">
-                <i class="fas fa-sign-out-alt"></i> 退出登录
-            </button>
         </div>
         
-        <div class="main-content">
-            <nav class="sidebar">
-                <ul>
-                    <li><a href="#" data-tab="batchRegister" class="active"><i class="fas fa-user-plus"></i> 批量注册</a></li>
-                    <li><a href="#" data-tab="batchJoin"><i class="fas fa-sign-in-alt"></i> 批量加群</a></li>
-                    <li><a href="#" data-tab="accountManager"><i class="fas fa-users"></i> 账号管理</a></li>
-                </ul>
-            </nav>
-            
-            <div class="content">
-                <!-- 批量注册标签页 -->
-                <div id="batchRegister" class="tab-content active">
-                    <h2><i class="fas fa-user-plus"></i> 批量注册账号</h2>
-                    
-                    <div class="card-grid">
-                        <div class="card">
-                            <h3><i class="fas fa-cogs"></i> 注册配置</h3>
-                            <div class="form-group">
-                                <label>注册数量:</label>
-                                <input type="number" id="regCount" value="5" min="1" max="20">
-                            </div>
-                            <div class="form-group">
-                                <label>注册地址:</label>
-                                <input type="text" id="registerUrl" value="https://potato160.org/dl" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>默认密码:</label>
-                                <input type="text" id="defaultPassword" value="qwer1234" readonly>
-                            </div>
-                            <button id="startRegisterBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始注册</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-tachometer-alt"></i> 注册状态</h3>
-                            <div class="status-display">
-                                <div class="status-item">
-                                    <span class="label">目标数量:</span>
-                                    <span class="value" id="targetCount">5</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">已完成:</span>
-                                    <span class="value" id="completedCount">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">成功率:</span>
-                                    <span class="value" id="successRate">0%</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">当前状态:</span>
-                                    <span class="value" id="registerStatus">等待开始</span>
-                                </div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="registerProgress" style="width: 0%"></div>
-                            </div>
-                            <button id="stopRegisterBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止注册</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-list"></i> 注册日志</h3>
-                        <div style="max-height: 300px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>时间</th>
-                                        <th>邮箱账号</th>
-                                        <th>状态</th>
-                                        <th>详细信息</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="registerLog">
-                                    <!-- 注册日志将通过JavaScript动态生成 -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 批量加群标签页 -->
-                <div id="batchJoin" class="tab-content">
-                    <h2><i class="fas fa-sign-in-alt"></i> 批量加入群组</h2>
-                    
-                    <div class="card-grid">
-                        <div class="card">
-                            <h3><i class="fas fa-users"></i> 群组设置</h3>
-                            <div class="form-group">
-                                <label>群组ID或用户名 (每行一个):</label>
-                                <textarea id="groupList" rows="6" placeholder="请输入群组ID或用户名，每行一个&#10;例如:&#10;@group1&#10;group2&#10;123456789"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>加群延迟 (秒):</label>
-                                <input type="number" id="joinDelay" value="3" min="1" max="60">
-                            </div>
-                            <button id="startJoinBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始加群</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-tachometer-alt"></i> 加群状态</h3>
-                            <div class="status-display">
-                                <div class="status-item">
-                                    <span class="label">目标群组:</span>
-                                    <span class="value" id="targetGroups">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">已加入:</span>
-                                    <span class="value" id="joinedGroups">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">成功率:</span>
-                                    <span class="value" id="joinSuccessRate">0%</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">当前状态:</span>
-                                    <span class="value" id="joinStatus">等待开始</span>
-                                </div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="joinProgress" style="width: 0%"></div>
-                            </div>
-                            <button id="stopJoinBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止加群</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-list"></i> 加群日志</h3>
-                        <div style="max-height: 300px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>时间</th>
-                                        <th>账号</th>
-                                        <th>群组</th>
-                                        <th>状态</th>
-                                        <th>详细信息</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="joinLog">
-                                    <!-- 加群日志将通过JavaScript动态生成 -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 账号管理标签页 -->
-                <div id="accountManager" class="tab-content">
-                    <h2><i class="fas fa-users"></i> 账号管理</h2>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-table"></i> 账号列表</h3>
-                        <div style="margin-bottom: 15px; display: flex; gap: 10px;">
-                            <button id="refreshAccountsBtn" class="btn btn-small"><i class="fas fa-sync"></i> 刷新列表</button>
-                            <button id="deleteSelectedBtn" class="btn btn-danger btn-small"><i class="fas fa-trash"></i> 删除选中</button>
-                            <button id="exportAccountsBtn" class="btn btn-success btn-small"><i class="fas fa-file-export"></i> 导出账号</button>
-                        </div>
-                        <div style="max-height: 400px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="selectAll"></th>
-                                        <th>ID</th>
-                                        <th>邮箱账号</th>
-                                        <th>密码</th>
-                                        <th>状态</th>
-                                        <th>注册时间</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="accountList">
-                                    <!-- 账号列表将通过JavaScript动态生成 -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-chart-bar"></i> 账号统计</h3>
-                        <div class="status-display">
-                            <div class="status-item">
-                                <span class="label">总账号数:</span>
-                                <span class="value" id="totalAccounts">0</span>
-                            </div>
-                            <div class="status-item">
-                                <span class="label">可用账号:</span>
-                                <span class="value" id="availableAccounts">0</span>
-                            </div>
-                            <div class="status-item">
-                                <span class="label">封禁账号:</span>
-                                <span class="value" id="bannedAccounts">0</span>
-                            </div>
-                            <div class="status-item">
-                                <span class="label">今日注册:</span>
-                                <span class="value" id="todayRegistered">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div id="errorMessage" class="message message-error"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">账号:</label>
+                <input type="text" id="username" name="username" required placeholder="请输入账号">
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" required placeholder="请输入密码">
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-sign-in-alt"></i> 登录
+            </button>
+        </form>
         
-        <div class="footer">
-            <p>Potato批量管理工具 &copy; 2023 | 版本: v2.1.0 | 数据存储于浏览器本地</p>
+        <div class="demo-info">
+            <h4><i class="fas fa-info-circle"></i> 演示账号</h4>
+            <p><strong>账号:</strong> 0319</p>
+            <p><strong>密码:</strong> 0319</p>
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/app.js"></script>
+    <script>
+        // 检查是否已经登录
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const loginTime = localStorage.getItem('loginTime');
+            
+            if (isLoggedIn === 'true' && loginTime) {
+                const currentTime = new Date().getTime();
+                const loginTimestamp = parseInt(loginTime);
+                
+                // 检查是否在24小时内登录（24 * 60 * 60 * 1000 = 86400000 毫秒）
+                if (currentTime - loginTimestamp < 86400000) {
+                    window.location.href = 'index.html';
+                    return true;
+                } else {
+                    // 登录已过期，清除登录状态
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('loginTime');
+                }
+            }
+            return false;
+        }
+
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，检查登录状态...');
+            checkLoginStatus();
+            
+            // 设置表单提交事件
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('表单提交事件触发');
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const errorMessage = document.getElementById('errorMessage');
+                
+                console.log('输入的用户名:', username);
+                console.log('输入的密码:', password);
+                
+                // 验证账号密码
+                if (username === '0319' && password === '0319') {
+                    console.log('登录成功，设置登录状态');
+                    
+                    // 设置登录状态
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loginTime', new Date().getTime().toString());
+                    
+                    // 显示成功消息
+                    errorMessage.textContent = '登录成功，正在跳转...';
+                    errorMessage.style.display = 'block';
+                    errorMessage.style.background = '#c6f6d5';
+                    errorMessage.style.color = '#276749';
+                    errorMessage.style.borderColor = '#9ae6b4';
+                    
+                    // 延迟跳转，让用户看到成功消息
+                    setTimeout(function() {
+                        console.log('跳转到主页面');
+                        window.location.href = 'index.html';
+                    }, 1000);
+                    
+                } else {
+                    console.log('登录失败：账号或密码错误');
+                    errorMessage.textContent = '账号或密码错误！请使用账号：0319 密码：0319';
+                    errorMessage.style.display = 'block';
+                    
+                    // 清空密码框
+                    document.getElementById('password').value = '';
+                }
+            });
+            
+            // 自动填充演示账号（仅用于测试）
+            document.getElementById('username').value = '0319';
+            document.getElementById('password').value = '0319';
+        });
+
+        // 添加控制台日志，帮助调试
+        console.log('登录页面脚本加载完成');
+    </script>
 </body>
 </html>

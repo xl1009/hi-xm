@@ -350,6 +350,26 @@ input:focus, select:focus, textarea:focus {
     font-size: 12px;
 }
 
+/* 添加表单分组样式 */
+.form-group-row {
+    display: flex;
+    gap: 15px;
+    align-items: end;
+}
+
+.form-group-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* 配置保存提示 */
+.config-saved {
+    color: var(--success);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
 @media (max-width: 768px) {
     .main-content {
         flex-direction: column;

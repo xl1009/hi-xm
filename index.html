@@ -437,7 +437,7 @@
                             </div>
                             <div class="form-group">
                                 <label>注册地址:</label>
-                                <input type="text" id="registerUrl" value="https://potato160.org/dl" placeholder="请输入注册地址">
+                                <input type="text" id="registerUrl" placeholder="请输入注册地址">
                             </div>
                             <div class="form-group">
                                 <label>接码平台:</label>
@@ -450,7 +450,7 @@
                             </div>
                             <div class="form-group">
                                 <label>默认密码:</label>
-                                <input type="text" id="defaultPassword" value="qwer1234" placeholder="请输入默认密码">
+                                <input type="text" id="defaultPassword" placeholder="请输入默认密码">
                             </div>
                             <div class="form-group">
                                 <label>国家/地区:</label>
@@ -710,6 +710,25 @@
             // 注册数量变化时更新显示
             document.getElementById('regCount').addEventListener('change', (e) => {
                 document.getElementById('targetCount').textContent = e.target.value;
+            });
+
+            // 开始注册按钮事件
+            document.getElementById('startRegisterBtn').addEventListener('click', function() {
+                const registerUrl = document.getElementById('registerUrl').value;
+                const defaultPassword = document.getElementById('defaultPassword').value;
+                
+                if (!registerUrl.trim()) {
+                    showMessage('请输入注册地址', 'error');
+                    return;
+                }
+                
+                if (!defaultPassword.trim()) {
+                    showMessage('请输入默认密码', 'error');
+                    return;
+                }
+                
+                showMessage('开始批量注册...', 'info');
+                // 这里可以添加实际的注册逻辑
             });
 
             // 显示欢迎消息

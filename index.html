@@ -50,186 +50,120 @@
             
             <div class="content">
                 <!-- 批量注册标签页 -->
-                <div id="batchRegister" class="tab-content active">
-                    <h2><i class="fas fa-user-plus"></i> 批量注册账号</h2>
-                    
-                    <div class="card-grid">
-                        <div class="card">
-                            <h3><i class="fas fa-cogs"></i> 注册配置</h3>
-                            <div class="form-group">
-                                <label>注册数量:</label>
-                                <input type="number" id="regCount" value="5" min="1" max="50">
-                            </div>
-                            <div class="form-group">
-                                <label>注册地址:</label>
-                                <input type="text" id="registerUrl" value="https://potato160.org/dl" placeholder="请输入注册地址">
-                            </div>
-                            <div class="form-group">
-                                <label>接码平台:</label>
-                                <select id="smsService">
-                                    <option value="10minutemail">10MinuteMail</option>
-                                    <option value="tempmail">Temp-Mail</option>
-                                    <option value="guerrillamail">GuerrillaMail</option>
-                                    <option value="other">其他平台</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>默认密码:</label>
-                                <input type="text" id="defaultPassword" value="qwer1234" placeholder="请输入默认密码">
-                            </div>
-                            <div class="form-group">
-                                <label>国家/地区:</label>
-                                <select id="countryCode">
-                                    <option value="+86">中国 (+86)</option>
-                                    <option value="+1">美国 (+1)</option>
-                                    <option value="+44">英国 (+44)</option>
-                                    <option value="+7">俄罗斯 (+7)</option>
-                                    <option value="+49">德国 (+49)</option>
-                                    <option value="+33">法国 (+33)</option>
-                                </select>
-                            </div>
-                            <button id="startRegisterBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始注册</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-tachometer-alt"></i> 注册状态</h3>
-                            <div class="status-display">
-                                <div class="status-item">
-                                    <span class="label">目标数量:</span>
-                                    <span class="value" id="targetCount">5</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">已完成:</span>
-                                    <span class="value" id="completedCount">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">成功率:</span>
-                                    <span class="value" id="successRate">0%</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">当前状态:</span>
-                                    <span class="value" id="registerStatus">等待开始</span>
-                                </div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="registerProgress" style="width: 0%"></div>
-                            </div>
-                            <button id="stopRegisterBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止注册</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-sliders-h"></i> 高级设置</h3>
-                            <div class="form-group">
-                                <label>注册间隔 (秒):</label>
-                                <input type="number" id="registerDelay" value="3" min="1" max="30">
-                            </div>
-                            <div class="form-group">
-                                <label>失败重试次数:</label>
-                                <input type="number" id="retryCount" value="2" min="0" max="5">
-                            </div>
-                            <div class="form-group">
-                                <label>验证码超时 (秒):</label>
-                                <input type="number" id="captchaTimeout" value="60" min="10" max="180">
-                            </div>
-                            <div class="form-group">
-                                <label>用户代理:</label>
-                                <select id="userAgent">
-                                    <option value="random">随机浏览器</option>
-                                    <option value="chrome">Chrome</option>
-                                    <option value="firefox">Firefox</option>
-                                    <option value="safari">Safari</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-list"></i> 注册日志</h3>
-                        <div style="max-height: 300px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>时间</th>
-                                        <th>邮箱账号</th>
-                                        <th>密码</th>
-                                        <th>状态</th>
-                                        <th>详细信息</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="registerLog">
-                                    <!-- 注册日志将通过JavaScript动态生成 -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+<!-- 在批量注册标签页中修改这部分代码 -->
+<div id="batchRegister" class="tab-content active">
+    <h2><i class="fas fa-user-plus"></i> 批量注册账号</h2>
+    
+    <div class="card-grid">
+        <div class="card">
+            <h3><i class="fas fa-cogs"></i> 注册配置</h3>
+            <div class="form-group">
+                <label>注册数量:</label>
+                <input type="number" id="regCount" value="5" min="1" max="50">
+            </div>
+            <div class="form-group">
+                <label>注册地址:</label>
+                <input type="text" id="registerUrl" value="https://potato160.org/dl" readonly style="background-color: #f7fafc; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+                <label>接码平台:</label>
+                <select id="smsService">
+                    <option value="10minutemail">10MinuteMail</option>
+                    <option value="tempmail">Temp-Mail</option>
+                    <option value="guerrillamail">GuerrillaMail</option>
+                    <option value="other">其他平台</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>默认密码:</label>
+                <input type="text" id="defaultPassword" value="qwer1234" readonly style="background-color: #f7fafc; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+                <label>国家/地区:</label>
+                <select id="countryCode">
+                    <option value="+86">中国 (+86)</option>
+                    <option value="+1">美国 (+1)</option>
+                    <option value="+44">英国 (+44)</option>
+                    <option value="+7">俄罗斯 (+7)</option>
+                    <option value="+49">德国 (+49)</option>
+                    <option value="+33">法国 (+33)</option>
+                </select>
+            </div>
+            <button id="startRegisterBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始注册</button>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-tachometer-alt"></i> 注册状态</h3>
+            <div class="status-display">
+                <div class="status-item">
+                    <span class="label">目标数量:</span>
+                    <span class="value" id="targetCount">5</span>
                 </div>
-                
-                <!-- 批量加群标签页 -->
-                <div id="batchJoin" class="tab-content">
-                    <h2><i class="fas fa-sign-in-alt"></i> 批量加入群组</h2>
-                    
-                    <div class="card-grid">
-                        <div class="card">
-                            <h3><i class="fas fa-users"></i> 群组设置</h3>
-                            <div class="form-group">
-                                <label>群组ID或用户名 (每行一个):</label>
-                                <textarea id="groupList" rows="6" placeholder="请输入群组ID或用户名，每行一个&#10;例如:&#10;@group1&#10;group2&#10;123456789"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>加群延迟 (秒):</label>
-                                <input type="number" id="joinDelay" value="3" min="1" max="60">
-                            </div>
-                            <button id="startJoinBtn" class="btn btn-success"><i class="fas fa-play"></i> 开始加群</button>
-                        </div>
-                        
-                        <div class="card">
-                            <h3><i class="fas fa-tachometer-alt"></i> 加群状态</h3>
-                            <div class="status-display">
-                                <div class="status-item">
-                                    <span class="label">目标群组:</span>
-                                    <span class="value" id="targetGroups">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">已加入:</span>
-                                    <span class="value" id="joinedGroups">0</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">成功率:</span>
-                                    <span class="value" id="joinSuccessRate">0%</span>
-                                </div>
-                                <div class="status-item">
-                                    <span class="label">当前状态:</span>
-                                    <span class="value" id="joinStatus">等待开始</span>
-                                </div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="joinProgress" style="width: 0%"></div>
-                            </div>
-                            <button id="stopJoinBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止加群</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3><i class="fas fa-list"></i> 加群日志</h3>
-                        <div style="max-height: 300px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>时间</th>
-                                        <th>账号</th>
-                                        <th>群组</th>
-                                        <th>状态</th>
-                                        <th>详细信息</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="joinLog">
-                                    <!-- 加群日志将通过JavaScript动态生成 -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="status-item">
+                    <span class="label">已完成:</span>
+                    <span class="value" id="completedCount">0</span>
                 </div>
-                
+                <div class="status-item">
+                    <span class="label">成功率:</span>
+                    <span class="value" id="successRate">0%</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">当前状态:</span>
+                    <span class="value" id="registerStatus">等待开始</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="registerProgress" style="width: 0%"></div>
+            </div>
+            <button id="stopRegisterBtn" class="btn btn-danger"><i class="fas fa-stop"></i> 停止注册</button>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-sliders-h"></i> 高级设置</h3>
+            <div class="form-group">
+                <label>注册间隔 (秒):</label>
+                <input type="number" id="registerDelay" value="3" min="1" max="30">
+            </div>
+            <div class="form-group">
+                <label>失败重试次数:</label>
+                <input type="number" id="retryCount" value="2" min="0" max="5">
+            </div>
+            <div class="form-group">
+                <label>验证码超时 (秒):</label>
+                <input type="number" id="captchaTimeout" value="60" min="10" max="180">
+            </div>
+            <div class="form-group">
+                <label>用户代理:</label>
+                <select id="userAgent">
+                    <option value="random">随机浏览器</option>
+                    <option value="chrome">Chrome</option>
+                    <option value="firefox">Firefox</option>
+                    <option value="safari">Safari</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3><i class="fas fa-list"></i> 注册日志</h3>
+        <div style="max-height: 300px; overflow-y: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>邮箱账号</th>
+                        <th>密码</th>
+                        <th>状态</th>
+                        <th>详细信息</th>
+                    </tr>
+                </thead>
+                <tbody id="registerLog">
+                    <!-- 注册日志将通过JavaScript动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
                 <!-- 账号管理标签页 -->
                 <div id="accountManager" class="tab-content">
                     <h2><i class="fas fa-users"></i> 账号管理</h2>
@@ -295,3 +229,4 @@
     <script src="js/app.js"></script>
 </body>
 </html>
+
